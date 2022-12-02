@@ -1,39 +1,31 @@
 #!/usr/bin/env python3
 
 from functools import reduce
-import pdb
 
-SHAPE_MAP = {
-  'A': 'X',
-  'B': 'Y',
-  'C': 'Z'
+GAME_POINTS = {
+  'X': 0,
+  'Y': 3,
+  'Z': 6
 }
 
-POINTS = {
-  'X': 1,
-  'Y': 2,
-  'Z': 3
+SHAPE_POINTS = {
+  'A': 0,
+  'B': 1,
+  'C': 2,
+  'X': 2,
+  'Y': 0,
+  'Z': 1
 }
 
-WINS = {
-  'X': 'Y',
-  'Y': 'Z',
-  'Z': 'X'
-}
+def shape_points(opponent, outcome):
+    return (SHAPE_POINTS[opponent] + SHAPE_POINTS[outcome]) % 3 + 1
 
 def points(game):
   if not game:
     return 0
 
-  opponent, me = game.split()
-  opponent = SHAPE_MAP[opponent]
-  points = POINTS[me]
-  if WINS[opponent] == me:
-    return points + 6
-  elif me == opponent:
-    return points + 3
-  else:
-    return points
+  opponent, outcome = game.split()
+  return shape_points(opponent, outcome) + GAME_POINTS[outcome]
 
 f = open("input.txt", "r")
 games = f.read().split("\n")
