@@ -4,6 +4,7 @@ import(
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 )
 
@@ -14,20 +15,20 @@ func main() {
 	}
 	defer f.Close()
 	
-	scanner, currentCalories, mostCalories := bufio.NewScanner(f), 0, 0
+	scanner, currentCalories := bufio.NewScanner(f), 0
 	var line string
+	var elfCalories []int
 	for scanner.Scan() {
 		line = scanner.Text()
 		calories, e := strconv.Atoi(line)
 		if e != nil {
-			if currentCalories > mostCalories {
-				mostCalories = currentCalories
-			}
+			 elfCalories = append(elfCalories, currentCalories)
 			currentCalories = 0
 		} else {
 			currentCalories += calories
 		}
 	}
-	fmt.Println(mostCalories)
+	sort.Slice(elfCalories, func(i, j int) bool { return elfCalories[i] > elfCalories[j] })
+	fmt.Println(elfCalories[0] + elfCalories[1] + elfCalories[2])
 }
 
