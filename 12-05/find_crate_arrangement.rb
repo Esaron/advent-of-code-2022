@@ -39,9 +39,7 @@ class Stacker
   def rearrange
     @lines.drop(stacks.length + 2).each do |line|
       count, src, dest = line.match(COMMAND_REGEX).captures
-      count.to_i.times do
-        formatted_stacks[dest.to_i-1].push(formatted_stacks[src.to_i-1].pop)
-      end
+      formatted_stacks[dest.to_i-1].push(*formatted_stacks[src.to_i-1].pop(count.to_i))
     end
   end
 
